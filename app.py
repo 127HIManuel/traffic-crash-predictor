@@ -56,8 +56,23 @@ html, body, [class*="css"] {
     color: var(--text);
 }
 
-/* ── Remove Streamlit chrome ── */
-#MainMenu, footer, header { visibility: hidden; }
+/* ── Remove Streamlit chrome but KEEP mobile sidebar toggle ── */
+#MainMenu, footer { visibility: hidden; }
+header { background: transparent !important; }
+[data-testid="stHeader"] { padding-top: 0; }
+/* Hide header elements EXCEPT the sidebar toggle button */
+[data-testid="stHeader"] > div { display: none; }
+[data-testid="collapsedControl"] { 
+    visibility: visible !important; 
+    display: flex !important;
+    color: var(--accent);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-left: 10px;
+    z-index: 999999;
+}
 .block-container { padding: 1.5rem 2rem 3rem 2rem; max-width: 1400px; }
 
 /* ── Sidebar ── */
