@@ -13,6 +13,7 @@ import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import streamlit.components.v1 as components
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -637,8 +638,6 @@ with st.sidebar:
     8,509 combined records
     </div>
     """, unsafe_allow_html=True)
-
-
 # ══════════════════════════════════════════════════════════════════════
 # LOAD MODEL
 # ══════════════════════════════════════════════════════════════════════
@@ -646,6 +645,40 @@ with st.sidebar:
 ensemble, encoders, features, threshold, missing_files = load_model()
 model_loaded = ensemble is not None
 
+
+# ══════════════════════════════════════════════════════════════════════
+# MOBILE AUTO-COLLAPSE (EXECUTES ON PAGE RERUN)
+# ══════════════════════════════════════════════════════════════════════
+
+components.html(
+    """
+    <script>
+    // This script runs every time Streamlit loads a new page
+    const doc = window.parent.document;
+    
+    // 1. Check if we are on a mobile-sized screen
+    if (window.parent.innerWidth < 992) {
+        
+        // 2. Check if the sidebar is currently open (visible on screen)
+        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+        if (sidebar && sidebar.getBoundingClientRect().width > 0) {
+            
+            // 3. Find the close/collapse button
+            const closeBtn = doc.querySelector('[data-testid="stSidebarCollapseButton"]') || 
+                             doc.querySelector('[aria-label="Collapse sidebar"]') || 
+                             doc.querySelector('[data-testid="stSidebar"] button');
+            
+            // 4. Click it to hide the menu and show the new page
+            if (closeBtn) {
+                closeBtn.click();
+            }
+        }
+    }
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 # ══════════════════════════════════════════════════════════════════════
 # PAGE: DASHBOARD
