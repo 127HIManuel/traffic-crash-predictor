@@ -702,7 +702,14 @@ PLOT_THEME = dict(
     plot_bgcolor ="rgba(0,0,0,0)",
     font=dict(family="Space Grotesk, sans-serif", color="#64748B", size=11),
     margin=dict(l=10, r=10, t=40, b=10),
+    dragmode=False, # 🛑 1. Kills drag-and-drop / pinch-to-zoom completely 🛑
 )
+
+# 🛑 2. Kills scroll zooming and removes the zoom toolbars so users can't activate them 🛑
+PLOT_CONFIG = {
+    "scrollZoom": False,
+    "displayModeBar": False,
+}
 
 
 def severity_donut():
@@ -912,13 +919,13 @@ if "Dashboard" in page:
 
     c1, c2 = st.columns([1, 2])
     with c1:
-        st.plotly_chart(severity_donut(), use_container_width=True)
+        st.plotly_chart(severity_donut(), use_container_width=True, config=PLOT_CONFIG)
     with c2:
-        st.plotly_chart(hourly_crashes_chart(), use_container_width=True)
+        st.plotly_chart(hourly_crashes_chart(), use_container_width=True, config=PLOT_CONFIG)
 
     c3, c4 = st.columns(2)
     with c3:
-        st.plotly_chart(day_of_week_chart(), use_container_width=True)
+        st.plotly_chart(day_of_week_chart(), use_container_width=True, config=PLOT_CONFIG)
     with c4:
         labels = ["Fatal","Serious","Minor"]
         values = [CRASH_STATS["fatal_frsc"], CRASH_STATS["serious_frsc"], CRASH_STATS["minor_frsc"]]
@@ -941,7 +948,7 @@ if "Dashboard" in page:
             title=dict(text="FRSC Osun Severity — 2025",
                         font=dict(size=12, family="JetBrains Mono", color="#94A3B8")),
             **PLOT_THEME)
-        st.plotly_chart(fig_frsc, use_container_width=True)
+        st.plotly_chart(fig_frsc, use_container_width=True, config=PLOT_CONFIG)
 
     st.markdown("""
     <div class="info-box">
@@ -1079,7 +1086,7 @@ elif "Route" in page:
     </div>
     """, unsafe_allow_html=True)
 
-    st.plotly_chart(route_danger_chart(), use_container_width=True)
+    st.plotly_chart(route_danger_chart(), use_container_width=True, config=PLOT_CONFIG)
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown('<div class="sec-head">ALL ROUTES — RISK CLASSIFICATION <div class="line"></div></div>', unsafe_allow_html=True)
